@@ -1,0 +1,16 @@
+{
+  "name": "0tx",
+  "owner": {
+    "name": "Petrus Theron"
+  },
+  "metadata": {
+    "description": "The 0tx plugin: the 0tx MCP server entry and skills for bookkeeping in 0tx ledgers."
+  },
+  "plugins": [
+    {
+      "name": "0tx",
+      "source": "./",
+      "description": "Read and post double-entry bookkeeping in your 0tx ledgers. Connects to the 0tx MCP server with OAuth sign-in."
+    }
+  ]
+}

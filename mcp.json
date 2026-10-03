@@ -2,7 +2,7 @@
   "mcpServers": {
     "0tx": {
       "type": "http",
-      "url": "https://0tx.app/mcp"
+      "url": "https://api.0tx.app/mcp"
     }
   }
 }

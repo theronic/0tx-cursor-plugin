@@ -1,11 +1,11 @@
 {
   "name": "0tx",
   "displayName": "0tx",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "minClientVersions": {
     "cursor": "3.13.0"
   },
-  "description": "Connect agents to 0tx (ZeroTax), a personal tax accounting ledger, via MCP.",
+  "description": "Read and post double-entry bookkeeping in your 0tx ledgers: accounts, journal entries, period summaries and reviewed batches of changes.",
   "author": {
     "name": "Petrus Theron"
   },
@@ -16,18 +16,19 @@
   "keywords": [
     "0tx",
     "zerotax",
-    "tax",
     "accounting",
+    "bookkeeping",
     "ledger",
-    "mcp",
-    "finance"
+    "tax",
+    "finance",
+    "mcp"
   ],
-  "category": "finance",
+  "category": "integrations",
   "tags": [
     "0tx",
-    "tax",
-    "mcp",
-    "finance"
+    "finance",
+    "accounting",
+    "mcp"
   ],
   "mcpServers": "./mcp.json"
 }
