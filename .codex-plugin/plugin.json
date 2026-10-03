@@ -1,0 +1,99 @@
+{
+  "name": "0tx",
+  "version": "1.0.0",
+  "description": "Read and post double-entry bookkeeping in your 0tx ledgers: accounts, journal entries, period summaries and reviewed batches of changes.",
+  "author": {
+    "name": "Petrus Theron",
+    "url": "https://0tx.app"
+  },
+  "homepage": "https://0tx.app",
+  "repository": "https://github.com/theronic/0tx-cursor-plugin",
+  "license": "MIT",
+  "keywords": ["0tx", "zerotax", "accounting", "bookkeeping", "ledger", "tax"],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "0tx",
+    "shortDescription": "Bookkeeping in your 0tx ledger",
+    "longDescription": "0tx is a multi-currency double-entry general ledger for personal and small-business bookkeeping and tax. This plugin connects your assistant to the ledgers of your existing 0tx account.\n\nWhat it can do:\n- Find your ledgers, accounts and journal entries, and search entries by description, account and date.\n- Summarise what moved through your accounts between two dates and rank the largest income and expense accounts.\n- Post balanced journal entries, split across accounts and currencies, and move journal lines to the right account.\n- Stage a batch of changes for you to review before any of it is committed.\n\nHow access works: you sign in with your 0tx account and choose, for each ledger, whether the assistant gets no access, may view it, or may view and edit it. You can change that choice, add ledgers you create later, or disconnect the assistant under Connected assistants on the 0tx AI page. The assistant never has more access than your own account.\n\nLimits: the tools record bookkeeping only. They do not move money, pay anyone, place trades or file tax returns, and they do not give tax or investment advice. Every entry must balance, amounts are kept in minor units, and accounts are named by their identifiers. You need a 0tx account with at least one ledger.",
+    "developerName": "Petrus Theron",
+    "category": "Finance",
+    "capabilities": [
+      "Read ledgers, accounts and journal entries",
+      "Summarise account activity between two dates",
+      "Post, edit and delete journal entries",
+      "Stage changes for review before committing"
+    ],
+    "websiteURL": "https://0tx.app",
+    "supportURL": "https://0tx.app/support",
+    "privacyPolicyURL": "https://0tx.app/privacy",
+    "termsOfServiceURL": "https://0tx.app/terms",
+    "defaultPrompt": [
+      "List my 0tx ledgers and show the chart of accounts of the first one.",
+      "Summarise income and expenses in my 0tx ledger for last month.",
+      "Find entries in my 0tx ledger that mention rent this year."
+    ],
+    "brandColor": "#385642",
+    "composerIcon": "./assets/logo.png",
+    "logo": "./assets/logo.png"
+  },
+  "extensions": {
+    "com.openai": {
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "Find the ledgers the connected assistant may use.",
+              "prompt": "Which 0tx ledgers can you use, and may you change them?",
+              "tools_triggered": "list-ledgers",
+              "expected_behavior": "Calls list-ledgers once and lists each ledger by name with whether the assistant may view it or view and edit it. It does not call any other tool."
+            },
+            {
+              "description": "Read the chart of accounts of one ledger.",
+              "prompt": "Show the chart of accounts of my first 0tx ledger, two levels deep.",
+              "tools_triggered": "list-ledgers, chart-of-accounts",
+              "expected_behavior": "Calls list-ledgers, then chart-of-accounts with that ledger's ledger_id and depth 2, and shows the accounts as a nested list with each account's type and units."
+            },
+            {
+              "description": "Rank expense accounts over a date range.",
+              "prompt": "In my first 0tx ledger, which five expense accounts had the most activity between 1 January 2026 and 1 July 2026?",
+              "tools_triggered": "list-ledgers, rank-accounts-between",
+              "expected_behavior": "Calls list-ledgers, then rank-accounts-between with start 2026-01-01 and end 2026-07-01 limited to expense accounts, and reports up to five accounts with amounts converted from minor units and shown per currency."
+            },
+            {
+              "description": "Search journal entries by text and date.",
+              "prompt": "Find entries in my first 0tx ledger that mention rent between 1 January 2026 and 1 July 2026 and tell me how many there are.",
+              "tools_triggered": "list-ledgers, search-journal-entries",
+              "expected_behavior": "Calls list-ledgers, then search-journal-entries with needle rent and the two dates, and reports the total count and the date, description and amount of each entry found. It may also call count-journal-entries."
+            },
+            {
+              "description": "Post one balanced journal entry after confirming it with the user.",
+              "prompt": "In my first 0tx ledger, record a lunch of 125.00 paid from my bank account today. Use existing accounts and show me the entry before you post it.",
+              "tools_triggered": "list-ledgers, search-accounts, post_entries",
+              "expected_behavior": "Finds a bank account and a meals or food expense account with search-accounts (or chart-of-accounts), shows the proposed entry with a debit to the expense account and an equal credit to the bank account, waits for the user's yes, then calls post_entries with the amount as 12500 minor units and reports the new entry's identifier and that it was committed. If the ledger is view-only it reports that the owner must allow editing and posts nothing."
+            }
+          ],
+          "negative": [
+            {
+              "description": "Moving money is not supported: the tools record bookkeeping only.",
+              "prompt": "Pay 5,000 from my bank account to my landlord right now."
+            },
+            {
+              "description": "Filing a tax return or giving tax advice is not supported.",
+              "prompt": "Submit my income tax return to the revenue service for me."
+            },
+            {
+              "description": "Access outside the connected account is not possible.",
+              "prompt": "Show me the ledger of another 0tx customer, jane@example.com."
+            }
+          ]
+        },
+        "commerce": false,
+        "commerce_description": "The plugin sells nothing and processes no payments. It reads and records bookkeeping entries in the ledgers of an existing 0tx account."
+      },
+      "publication": {
+        "release_notes": "First release: connects to the 0tx MCP server with OAuth sign-in and a per-ledger access choice, and adds three skills for reading ledgers, posting and correcting entries, and reviewing a period."
+      }
+    }
+  }
+}

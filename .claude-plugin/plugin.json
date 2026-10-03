@@ -1,0 +1,13 @@
+{
+  "name": "0tx",
+  "version": "1.0.0",
+  "description": "Read and post double-entry bookkeeping in your 0tx ledgers: accounts, journal entries, period summaries and reviewed batches of changes. Connects to the 0tx MCP server with OAuth sign-in.",
+  "author": {
+    "name": "Petrus Theron",
+    "url": "https://0tx.app"
+  },
+  "homepage": "https://0tx.app",
+  "repository": "https://github.com/theronic/0tx-cursor-plugin",
+  "license": "MIT",
+  "keywords": ["0tx", "zerotax", "accounting", "bookkeeping", "ledger", "tax"]
+}
